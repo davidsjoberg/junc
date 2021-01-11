@@ -80,7 +80,7 @@ base_junc <- function (x, y, ..., suffix = c("", ".y"), keep = FALSE, unique = T
 
   if(type %in% c("right", "full")) {
     result <- result %>%
-      bind_rows(x %>%
+      bind_rows(y %>%
                   filter(!(tmp_row_number_y %in% result$tmp_row_number_y)))
   }
 
