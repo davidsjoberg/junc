@@ -57,10 +57,10 @@ base_junc <- function (x, y, ..., suffix = c("", ".y"), keep = FALSE, unique = T
   if(unique) {
 
     if(x_longer_than_y) {
-      duplicates <- inner_result %>%
+      duplicates <- result %>%
       filter(duplicated(tmp_row_number_x))
     } else {
-      duplicates <- inner_result %>%
+      duplicates <- result %>%
         filter(duplicated(tmp_row_number_y))
     }
 
@@ -75,23 +75,23 @@ base_junc <- function (x, y, ..., suffix = c("", ".y"), keep = FALSE, unique = T
   if(type %in% c("left", "full")) {
     result <- result %>%
       bind_rows(x %>%
-                  filter(!(tmp_row_number_x %in% inner_result$tmp_row_number_x)))
+                  filter(!(tmp_row_number_x %in% result$tmp_row_number_x)))
   }
 
   if(type %in% c("right", "full")) {
     result <- result %>%
       bind_rows(x %>%
-                  filter(!(tmp_row_number_y %in% inner_result$tmp_row_number_y)))
+                  filter(!(tmp_row_number_y %in% result$tmp_row_number_y)))
   }
 
   if(type == "semi") {
     result <- x %>%
-      filter(tmp_row_number_x %in% inner_result$tmp_row_number_x)
+      filter(tmp_row_number_x %in% result$tmp_row_number_x)
   }
 
   if(type == "anti") {
     result <- x %>%
-      filter(!(tmp_row_number_x %in% inner_result$tmp_row_number_x))
+      filter(!(tmp_row_number_x %in% result$tmp_row_number_x))
   }
 
   # Arrange rows, rerrange columns and remove temporary row numbers
