@@ -1,0 +1,10 @@
+Package: junc
+Type: Package
+Title: Join two tables
+Version: 0.1.0
+Author: Oskar Johansson, David Sjöberg
+Maintainer: Oskar Johansson <oskar.e.johansson@gmail.com>
+Description: Join two tables together based on common variables, specified intervals etc. The package has the ability to match a dates to time intervals and vice versa.
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
