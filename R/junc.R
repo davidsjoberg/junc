@@ -1,7 +1,8 @@
 # TODO:
-# Write documentation
-# Add handling of column name duplicates between frames
+# Solve dependencies
+# Add handling of column name duplicates between frames (i.e. implement suffix argument)
 # Implement keep argument
+# Write documentation
 # Write tests
 
 base_junc <- function (x, y, ..., suffix = c("", ".y"), keep = FALSE, unique = TRUE, type)  {
@@ -71,13 +72,13 @@ base_junc <- function (x, y, ..., suffix = c("", ".y"), keep = FALSE, unique = T
   }
 
   # Add/Remove non-matched rows depending on join type
-  if(any(type %in% c("left", "full"))) {
+  if(type %in% c("left", "full")) {
     result <- result %>%
       bind_rows(x %>%
                   filter(!(tmp_row_number_x %in% inner_result$tmp_row_number_x)))
   }
 
-  if(any(type %in% c("right", "full"))) {
+  if(type %in% c("right", "full")) {
     result <- result %>%
       bind_rows(x %>%
                   filter(!(tmp_row_number_y %in% inner_result$tmp_row_number_y)))
