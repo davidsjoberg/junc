@@ -97,7 +97,8 @@ base_junc <- function (x, y, ..., suffix = c("", ".y"), keep = FALSE, unique = T
   # Arrange rows, rerrange columns and remove temporary row numbers
   result <- result %>%
     arrange(tmp_row_number_x) %>%
-    select(c(colnames(x), colnames(y)) %>% unique())
+    select(c(colnames(x), colnames(y)) %>% unique(),
+           -c("tmp_row_number_x", "tmp_row_number_y"))
 
   return(result)
 }
