@@ -36,26 +36,24 @@ base_junc <- function (x, y, ..., suffix = c("", ".y"), keep = FALSE, unique = T
   # Prefix RHS of condition for map compatability
   join_conditions <- join_conditions %>%
     as.character() %>%
-    str_replace(" ([A-Za-z]+.*?$)", " this_row$\\1")
+  str_replace(" ([A-Za-z]+.*?$)", " .x$\\1")
 
   # Remove '~' and collapse to combined filter statement
   join_conditions <- join_conditions %>%
     str_remove_all("~") %>%
     paste0(collapse = " & ")
 
-  # Execute the join
-  result <- map_dfr(1:nrow(short), ~ {
-    this_row <- slice(short, .x)
+  # Prepare and execute the join
+  short_list <- split(short, seq(nrow(short)))
+  names <- setdiff(colnames(short), colnames(long))
+  parsed_conditions <- rlang::parse_expr(join_conditions)
 
-    long %>%
-      filter(eval(rlang::parse_expr(join_conditions))) %>%
-      bind_cols(this_row %>%
-                  select(setdiff(colnames(this_row), colnames(long))))
+  result <- map_dfr(short_list, ~ {
+      bind_cols(filter(long, eval(parsed_conditions)), .x %>% select(names))
   })
 
   # Look for multiple potential joins
   if(unique) {
-
     if(x_longer_than_y) {
       duplicates <- result %>%
       filter(duplicated(tmp_row_number_x))
